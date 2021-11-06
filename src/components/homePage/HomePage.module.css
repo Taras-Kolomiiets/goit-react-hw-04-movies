@@ -1,0 +1,14 @@
+.link {
+  display: block;
+  width: fit-content;
+  padding: 5px;
+  color: black;
+  margin: 5px;
+  margin-left: 20px;
+}
+
+.link:hover {
+  color: rgb(19, 96, 126);
+  transform: scale(1.1);
+  transition: transform 500ms linear;
+}

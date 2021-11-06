@@ -1,0 +1,27 @@
+.list {
+  list-style: none;
+}
+
+.item {
+  border: 1px solid rgb(101, 101, 209);
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.author {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.descr {
+  font-size: 14px;
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+.content {
+  font-size: 16px;
+  font-weight: 400;
+  text-align: justify;
+}

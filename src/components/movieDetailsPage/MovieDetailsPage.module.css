@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+}
+
+.image {
+  width: 200px;
+}
+
+.innerWrapper {
+  display: block;
+  margin-left: 20px;
+}
+
+.overview {
+  text-align: justify;
+}
+
+.decsr {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  font-weight: 500;
+  color: #2a363b;
+  font-size: 18px;
+}
+
+.activeLink {
+  composes: link;
+  color: #2196f3;
+}
