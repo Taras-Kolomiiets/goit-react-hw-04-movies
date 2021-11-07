@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import {
   NavLink,
   useParams,
@@ -7,9 +7,12 @@ import {
   Switch,
 } from "react-router-dom";
 import { getMovieDetails } from "../../api/movies-api";
-import Cast from "../cast";
-import Reviews from "../reviews";
 import classes from "./MovieDetailsPage.module.css";
+
+const Cast = lazy(() => import("../cast" /*webpackChunkName: "cast" */));
+const Reviews = lazy(() =>
+  import("../reviews" /*webpackChunkName: "reviews" */)
+);
 
 const MovieDetailsPage = () => {
   const [movie, setMovie] = useState({});
@@ -67,15 +70,17 @@ const MovieDetailsPage = () => {
           </NavLink>
         </li>
       </ul>
-
-      <Switch>
-        <Route path={`/movies/:movieId/cast`}>
-          <Cast />
-        </Route>
-        <Route path={`/movies/:movieId/reviews`}>
-          <Reviews />
-        </Route>
-      </Switch>
+      <hr />
+      <Suspense fallback={<h1>Loading...</h1>}>
+        <Switch>
+          <Route path={`/movies/:movieId/cast`}>
+            <Cast />
+          </Route>
+          <Route path={`/movies/:movieId/reviews`}>
+            <Reviews />
+          </Route>
+        </Switch>
+      </Suspense>
     </>
   );
 };

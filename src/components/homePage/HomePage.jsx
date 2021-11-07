@@ -12,6 +12,7 @@ const HomePage = () => {
 
   return (
     <div className={classes.wrapper}>
+      <h2>Trending today:</h2>
       {movies.map((movie) => {
         return (
           <Link

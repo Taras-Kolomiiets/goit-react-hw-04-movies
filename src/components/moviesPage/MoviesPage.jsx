@@ -1,43 +1,43 @@
-import { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import { getSearchedMovies } from "../../api/movies-api";
 import classes from "./MoviesPage.module.css";
+import SearchBar from "../searchBar";
 
 const MoviesPage = () => {
-  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
 
   const { url } = useRouteMatch();
+  const location = useLocation();
+  const history = useHistory();
 
-  const changeQuery = (e) => {
-    setQuery(e.target.value);
-  };
+  const query = new URLSearchParams(location.search).get("query");
 
-  const findMovies = () => {
-    if (query === "") {
-      alert("Please input movie.");
-      return;
+  useEffect(() => {
+    if (query) {
+      getSearchedMovies(query)
+        .then(({ results }) => {
+          if (results.length === 0) {
+            alert("Sorry, we haven't such movie.");
+            return;
+          }
+
+          setMovies(results);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    getSearchedMovies(query).then((movies) => setMovies(movies.results));
-    setQuery("");
-  };
+  }, [query]);
 
-  console.log(movies);
+  const onSeachSubmit = (query) => {
+    history.push({ ...location, search: `query=${query}` });
+  };
 
   return (
     <>
-      <div className={classes.wrapper}>
-        <input
-          className={classes.input}
-          type="text"
-          placeholder="find movies"
-          value={query}
-          onChange={changeQuery}
-        />
-        <button type="button" onClick={findMovies} className={classes.button}>
-          Search
-        </button>
-      </div>
+      <SearchBar onSubmit={onSeachSubmit} />
+
       {movies.length > 0 &&
         movies.map((movie) => {
           return (
