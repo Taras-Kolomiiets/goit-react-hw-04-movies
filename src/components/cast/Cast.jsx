@@ -6,7 +6,8 @@ import classes from "./Cast.module.css";
 const Cast = () => {
   const [cast, setCast] = useState([]);
 
-  const { movieId } = useParams();
+  const { slug } = useParams();
+  const movieId = slug.match(/[a-z0-9]+$/)[0];
 
   useEffect(() => {
     getMovieCast(movieId).then((res) => setCast(res.cast));

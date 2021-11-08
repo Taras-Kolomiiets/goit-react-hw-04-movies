@@ -6,7 +6,8 @@ import classes from "./Reviews.module.css";
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
 
-  const { movieId } = useParams();
+  const { slug } = useParams();
+  const movieId = slug.match(/[a-z0-9]+$/)[0];
 
   useEffect(() => {
     getMovieReviews(movieId).then((res) => setReviews(res.results));

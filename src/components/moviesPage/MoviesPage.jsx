@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import slugify from "slugify";
 import { Link, useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import { getSearchedMovies } from "../../api/movies-api";
 import classes from "./MoviesPage.module.css";
 import SearchBar from "../searchBar";
+
+const makeSlug = (string) => slugify(string, { lower: true });
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
@@ -42,7 +45,10 @@ const MoviesPage = () => {
         movies.map((movie) => {
           return (
             <Link
-              to={`${url}/${movie.id}`}
+              to={{
+                pathname: `${url}/${makeSlug(`${movie.title} ${movie.id}`)}`,
+                state: { from: location, label: "Go to searched movies" },
+              }}
               key={movie.id}
               className={classes.link}
             >

@@ -3,6 +3,8 @@ import {
   NavLink,
   useParams,
   useRouteMatch,
+  useLocation,
+  useHistory,
   Route,
   Switch,
 } from "react-router-dom";
@@ -15,19 +17,29 @@ const Reviews = lazy(() =>
 );
 
 const MovieDetailsPage = () => {
+  const urlComponent = "https://image.tmdb.org/t/p/w500";
   const [movie, setMovie] = useState({});
 
-  const { movieId } = useParams();
+  const { slug } = useParams();
   const { url } = useRouteMatch();
+  const location = useLocation();
+  const history = useHistory();
+
+  const movieId = slug.match(/[a-z0-9]+$/)[0];
 
   useEffect(() => {
     getMovieDetails(movieId).then(setMovie);
   }, [movieId]);
 
-  const urlComponent = "https://image.tmdb.org/t/p/w500";
+  const onGoBack = () => {
+    history.push(location?.state?.from ?? "/");
+  };
 
   return (
     <>
+      <button type="button" onClick={onGoBack} className={classes.button}>
+        {location?.state?.label ?? "Go back"}
+      </button>
       <div className={classes.wrapper}>
         <img
           src={urlComponent + movie.poster_path}
@@ -73,10 +85,10 @@ const MovieDetailsPage = () => {
       <hr />
       <Suspense fallback={<h1>Loading...</h1>}>
         <Switch>
-          <Route path={`/movies/:movieId/cast`}>
+          <Route path={`/movies/:slug/cast`}>
             <Cast />
           </Route>
-          <Route path={`/movies/:movieId/reviews`}>
+          <Route path={`/movies/:slug/reviews`}>
             <Reviews />
           </Route>
         </Switch>
