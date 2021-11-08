@@ -1,24 +1,18 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState } from "react";
 import {
   NavLink,
   useParams,
   useRouteMatch,
   useLocation,
   useHistory,
-  Route,
-  Switch,
 } from "react-router-dom";
 import { getMovieDetails } from "../../api/movies-api";
 import classes from "./MovieDetailsPage.module.css";
 import PreLoader from "../preLoader";
-
-const Cast = lazy(() => import("../cast" /*webpackChunkName: "cast" */));
-const Reviews = lazy(() =>
-  import("../reviews" /*webpackChunkName: "reviews" */)
-);
+import SubNavigation from "../subNavigation";
+import MovieCard from "../movieCard";
 
 const MovieDetailsPage = () => {
-  const urlComponent = "https://image.tmdb.org/t/p/w500";
   const [movie, setMovie] = useState({});
   const [status, setStatus] = useState(null);
 
@@ -50,29 +44,7 @@ const MovieDetailsPage = () => {
           <button type="button" onClick={onGoBack} className={classes.button}>
             {location?.state?.label ?? "Go back"}
           </button>
-
-          <div className={classes.wrapper}>
-            <img
-              src={urlComponent + movie.poster_path}
-              alt={movie.title}
-              className={classes.image}
-            />
-            <div className={classes.innerWrapper}>
-              <h1>{movie.title}</h1>
-              <p>
-                <span className={classes.decsr}>Release date: </span>
-                {movie.release_date}
-              </p>
-              <p>
-                <span className={classes.decsr}>Rating: </span>{" "}
-                {movie.vote_average}
-              </p>
-              <p className={classes.overview}>
-                <span className={classes.decsr}>Overview: </span>{" "}
-                {movie.overview}
-              </p>
-            </div>
-          </div>
+          <MovieCard movie={movie} />
           <hr />
 
           <h3>Aditional information:</h3>
@@ -103,16 +75,7 @@ const MovieDetailsPage = () => {
             </li>
           </ul>
           <hr />
-          <Suspense fallback={<PreLoader />}>
-            <Switch>
-              <Route path={`/movies/:slug/cast`}>
-                <Cast />
-              </Route>
-              <Route path={`/movies/:slug/reviews`}>
-                <Reviews />
-              </Route>
-            </Switch>
-          </Suspense>
+          <SubNavigation />
         </>
       )}
     </>
