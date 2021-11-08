@@ -1,4 +1,5 @@
 import classes from "./MovieCard.module.css";
+import PropTypes from "prop-types";
 
 const MovieCard = ({ movie }) => {
   const urlComponent = "https://image.tmdb.org/t/p/w500";
@@ -26,6 +27,10 @@ const MovieCard = ({ movie }) => {
       </div>
     </div>
   );
+};
+
+MovieCard.propTypes = {
+  movie: PropTypes.object.isRequired,
 };
 
 export default MovieCard;
