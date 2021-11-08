@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import Container from "./components/container";
 import Navigation from "./components/navigation";
-// import { Loading } from "notiflix";
+import PreLoader from "./components/preLoader";
 
 const HomePage = lazy(() =>
   import("./components/homePage" /*webpackChunkName: "home-page" */)
@@ -24,7 +24,7 @@ const App = () => {
     <Container>
       <Navigation />
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<PreLoader />}>
         <Switch>
           <Route path="/" exact>
             <HomePage />

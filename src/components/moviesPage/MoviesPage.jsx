@@ -4,11 +4,13 @@ import { Link, useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import { getSearchedMovies } from "../../api/movies-api";
 import classes from "./MoviesPage.module.css";
 import SearchBar from "../searchBar";
+import PreLoader from "../preLoader";
 
 const makeSlug = (string) => slugify(string, { lower: true });
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
+  const [status, setStatus] = useState(null);
 
   const { url } = useRouteMatch();
   const location = useLocation();
@@ -18,6 +20,7 @@ const MoviesPage = () => {
 
   useEffect(() => {
     if (query) {
+      setStatus("pending");
       getSearchedMovies(query)
         .then(({ results }) => {
           if (results.length === 0) {
@@ -26,6 +29,7 @@ const MoviesPage = () => {
           }
 
           setMovies(results);
+          setStatus("resolved");
         })
         .catch((err) => {
           console.log(err);
@@ -41,7 +45,8 @@ const MoviesPage = () => {
     <>
       <SearchBar onSubmit={onSeachSubmit} />
 
-      {movies.length > 0 &&
+      {status === "pending" && <PreLoader />}
+      {status === "resolved" &&
         movies.map((movie) => {
           return (
             <Link
